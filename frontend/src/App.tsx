@@ -1,12 +1,16 @@
-import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import UploadForm from './components/UploadForm';
+import Analyzer from './components/Analyzer';
 
-const App: React.FC = () => {
-    return (
-        <div>
-            <UploadForm />
-        </div>
-    );
+const App = () => {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<UploadForm />} />
+        <Route path="/analyzer" element={<Analyzer />} />
+      </Routes>
+    </BrowserRouter>
+  );
 };
 
 export default App;

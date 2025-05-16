@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const UploadForm: React.FC = () => {
     const [file, setFile] = useState<File | null>(null);
-    const [signals, setSignals] = useState<string[]>([]);
     const [error, setError] = useState<string | null>(null);
+
+    const navigate = useNavigate()
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files.length > 0) {
@@ -26,7 +28,8 @@ const UploadForm: React.FC = () => {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
 
-            setSignals(response.data.signals);
+            navigate('/analyzer', {state: {signals: response.data.signals}})
+            // setSignals(response.data.signals);
             setError(null);
         } catch (err: any) {
             setError(err.response?.data?.error || 'Hiba történt a feltöltés során.');
@@ -40,17 +43,6 @@ const UploadForm: React.FC = () => {
             <button onClick={handleUpload}>Feltöltés</button>
 
             {error && <p style={{ color: 'red' }}>{error}</p>}
-
-            {signals.length > 0 && (
-                <div>
-                    <h3>Szignálok:</h3>
-                    <ul>
-                        {signals.map((signal) => (
-                            <li key={signal}>{signal}</li>
-                        ))}
-                    </ul>
-                </div>
-            )}
         </div>
     );
 };
